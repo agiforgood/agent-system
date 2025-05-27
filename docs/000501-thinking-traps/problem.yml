@@ -1,0 +1,132 @@
+axiia-metadata:
+  initial-message:
+    path: materials/initial-msg.j2
+  prompt:
+    path: prompts/axiia.j2
+    replacement-keys: ['problem_description']
+bot-preset-list:
+  - linguist_cn
+  - data-analyst_cn
+  - mathematician_cn
+  - experienced-developer_cn
+  - phd-in-physics_cn
+  - prompt-builder_cn
+material-list:
+  - name: thinking-trap
+    title: 思维陷阱
+    copyable: true
+    path: materials/task.md
+submission-spec:
+  required-phrases:
+    - '{{input}}'
+  prefill:
+    path: materials/prefill.j2
+label-pred-group-list:
+  - name: thinking-trap
+    title: 测试题
+    hides-input: false
+    pairs:
+      - name: p1
+        input: 我的吉他老师告诉我需要纠正姿势 我已经练习了，但是没有任何进步。
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p2
+        input: 我和配偶吵架了。他威胁我，下次要给我点颜色瞧瞧。他可能会打我。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p3
+        input: 他知道我不喜欢被这样触碰。
+        output: 过度揣测（Mind reading）
+      - name: p4
+        input: 我不想再次在考试中失败。按照规定，再挂科我就会被退学，那么，我在这所大学的生活就将结束。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p5
+        input: 我暗恋的人不喜欢我，我找不到真爱了。
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p6
+        input: 他今天很安静。我是不是做错了什么？
+        output: 对人错觉（Personalizing）
+      - name: p7
+        input: 我给女朋友发微信她没回，她再也不会爱我了。
+        output: 过度揣测（Mind reading）
+      - name: p8
+        input: 我在写论文时什么也想不出来，我浪费了所有的时间。
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p9
+        input: 小明非常想谈恋爱。他的朋友建议他去用交友软件时，他吓坏了，说如果熟人朋友刷到了我的资料怎么办，他们会觉得我走投无路了。
+        output: 过度揣测（Mind reading）
+      - name: p10
+        input: 一位潜在客户决定与另一家公司合作，我让自己和公司都大失败。
+        output: 对人错觉（Personalizing）
+      - name: p11
+        input: 我忘记在工作时给我的老板传递一个重要的信息。留下信息的客户最后非常生气，因为他们有需要解决的问题。我的老板对我很失望，客户可能会因此选择其他公司 我觉得自己很失败。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p12
+        input: 这一次业绩评优我没评上，一定是别人在背后给我使绊子。
+        output: 对人错觉（Personalizing）
+      - name: p13
+        input: 如果一件事做得不完美，那么我就失败了。“够好了”这个概念根本不存在。
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p14
+        input: 我丈夫很早就叫我起床干活了。他难道不知道我还想再睡一会儿嘛？  
+        output: 过度揣测（Mind reading）
+      - name: p15
+        input: 在考试中得了一个很差的分数后，我感到非常焦虑 我的成绩很重要，而我表现得很差。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p16
+        input: 我的老板对我非常刻薄和咄咄逼人。我一定是工作没做好。
+        output: 对人错觉（Personalizing）
+      - name: p17
+        input: 我和弟弟经常吵架。上周末，他又发脾气了，因为他觉得我在指责他，但他经常这样对我。我很生气，因为他又发脾气了。他现在应该表现得像个成年人，但他没有。我真的不能再和他说话了，因为我怕他会爆发。  
+        output: 无明显思维陷阱（Not distorted）
+      - name: p18
+        input: 如果我考不上法律专业的研究生，我的未来就毁了。
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p19
+        input: 我不想让她离开家；我会感到难过和孤独。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p20
+        input: 我喜欢的人不喜欢我。我永远找不到真爱。  
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p21
+        input: 我节食做得不太好，这一方面我缺乏自制力。明天我可别再吃了。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p22
+        input: 和老朋友聚会的时候，张三很安静。李四问张三最近咋了，还好吧？张三想：哎呀，李四不乐意和我处了，他只愿意和聪明活泼的人相处。  
+        output: 过度揣测（Mind reading）
+      - name: p23
+        input: 我感觉自己没有动力。我无法让自己动起来做事，这种情况已经持续了很长时间。  
+        output: 无明显思维陷阱（Not distorted）
+      - name: p24
+        input: 我妹妹在中学时曾试图自杀 我没有做一个足够好的姐姐。
+        output: 对人错觉（Personalizing）
+      - name: p25
+        input: 我老板因为工作上的失误吼了我。我感到非常难过，偷偷地哭了。
+        output: 无明显思维陷阱（Not distorted）
+
+  - name: blind-box
+    title: 盲盒题
+    hides-input: true
+    pairs:
+      - name: p1
+        input: 我是个自私无情的人
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p2
+        input: 我这周给朋友打了三次电话，但她都没有接，也没有回电或发消息给我。也许她并不像我想象的那样喜欢我。
+        output: 过度揣测（Mind reading）
+      - name: p3
+        input: 我没有被世界五百强的公司录用，尽管我有这个职位所需的资历和经验，却被一个经验比我少的人取代了。我还是不够优秀。
+        output: 对人错觉（Personalizing）
+      - name: p4
+        input: 我在节食期间体重增加了，我没有成功
+        output: 非黑即白的思维（All-or-nothing thinking）
+      - name: p5
+        input: 我发现我丈夫不忠，我感到非常伤心和失望。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p6
+        input: 昨晚我开party，把厨房弄得有点乱。我的室友今天让我打扫一下，她讨厌我了。
+        output: 过度揣测（Mind reading）
+      - name: p7
+        input: 我在高中的时候成绩很好，但在大学，我失去了曾经引以为傲的东西，我的绩点不高。
+        output: 无明显思维陷阱（Not distorted）
+      - name: p8
+        input: 我在网上发布了一幅新的艺术作品，人们将它与其他人的作品进行比较。我不该发布它。
+        output: 对人错觉（Personalizing）

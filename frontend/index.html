@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Formatter - 齐家 AI 教练系统</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Radix UI Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@radix-ui/colors@0.1.8/gray.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markdown.min.js"></script>
+    <style>
+        /* Custom scrollbar for textareas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Radix-like styling */
+        .radix-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            background-color: rgb(71, 85, 105);
+            color: white;
+            transition: background-color 0.2s;
+        }
+        .radix-button:hover {
+            background-color: rgb(51, 65, 85);
+        }
+        .radix-button:focus {
+            outline: 2px solid rgba(71, 85, 105, 0.5);
+        }
+        .radix-button:disabled {
+            background-color: rgb(203, 213, 225);
+            cursor: not-allowed;
+        }
+        .radix-input {
+            padding: 0.5rem;
+            border: 1px solid rgb(203, 213, 225);
+            border-radius: 0.375rem;
+            transition: border-color 0.2s;
+        }
+        .radix-input:focus {
+            outline: none;
+            border-color: rgb(71, 85, 105);
+            box-shadow: 0 0 0 1px rgb(71, 85, 105);
+        }
+        .radix-select {
+            padding: 0.5rem;
+            border: 1px solid rgb(203, 213, 225);
+            border-radius: 0.375rem;
+            background-color: white;
+            transition: border-color 0.2s;
+        }
+        .radix-select:focus {
+            outline: none;
+            border-color: rgb(71, 85, 105);
+            box-shadow: 0 0 0 1px rgb(71, 85, 105);
+        }
+        .radix-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: rgb(241, 245, 249);
+            color: rgb(71, 85, 105);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Prompt Formatter</h1>
+            <p class="text-gray-600">齐家 AI 教练系统 - 将纯文本 Prompt 转换为符合 YAML + Jinja2 模板规范的格式</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Input Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Input</h2>
+                
+                <!-- Plain Text Input -->
+                <div class="mb-4">
+                    <label for="plainText" class="block text-sm font-medium text-gray-700 mb-1">Plain Text Content:</label>
+                    <textarea id="plainText" class="radix-input w-full h-64 font-mono text-sm" placeholder="Enter your prompt text here..."></textarea>
+                </div>
+
+                <!-- Metadata Options -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="promptName" class="block text-sm font-medium text-gray-700 mb-1">Name: <span class="text-red-500">*</span></label>
+                        <input type="text" id="promptName" class="radix-input w-full" placeholder="e.g., my_prompt" required>
+                    </div>
+                    <div>
+                        <label for="promptAuthor" class="block text-sm font-medium text-gray-700 mb-1">Author: <span class="text-red-500">*</span></label>
+                        <input type="text" id="promptAuthor" class="radix-input w-full" placeholder="e.g., Your Name" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label for="promptMode" class="block text-sm font-medium text-gray-700 mb-1">Mode: <span class="text-red-500">*</span></label>
+                        <select id="promptMode" class="radix-select w-full" required>
+                            <option value="text">text</option>
+                            <option value="chat">chat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="promptVersion" class="block text-sm font-medium text-gray-700 mb-1">Version:</label>
+                        <input type="number" id="promptVersion" class="radix-input w-full" value="1" min="1">
+                    </div>
+                    <div id="initialRoleContainer" class="hidden">
+                        <label for="initialRole" class="block text-sm font-medium text-gray-700 mb-1">Initial Role:</label>
+                        <select id="initialRole" class="radix-select w-full">
+                            <option value="system">system</option>
+                            <option value="user" selected>user</option>
+                            <option value="assistant">assistant</option>
+                            <option value="tool">tool</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Input Variables Section -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Input Variables:
+                        <span class="text-xs text-gray-500">(Auto-detected if not provided)</span>
+                    </label>
+                    <div id="variablesContainer" class="space-y-2 mb-2">
+                        <!-- Variables will be added here dynamically -->
+                        <div class="text-sm text-gray-500 italic">Variables will be detected from your prompt content.</div>
+                    </div>
+                    <button id="addVariableBtn" class="radix-button text-sm">+ Add Variable</button>
+                </div>
+
+                <div class="flex justify-end">
+                    <button id="formatBtn" class="radix-button">Format Prompt</button>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Formatted Output</h2>
+                    <div class="space-x-2">
+                        <button id="copyBtn" class="radix-button text-sm" disabled>Copy to Clipboard</button>
+                        <button id="downloadBtn" class="radix-button text-sm" disabled>Download</button>
+                    </div>
+                </div>
+                <div id="outputContainer" class="border border-gray-200 rounded-lg p-4 h-[500px] overflow-auto bg-gray-50">
+                    <pre><code id="formattedOutput" class="language-yaml"><!-- Formatted output will appear here --></code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>© 2025 齐家 AI 教练系统 - Prompt Formatter Tool</p>
+        </footer>
+    </div>
+
+    <!-- Add Variable Modal -->
+    <div id="addVariableModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Add Variable</h3>
+            <div class="space-y-4">
+                <div>
+                    <label for="varName" class="block text-sm font-medium text-gray-700 mb-1">Variable Name:</label>
+                    <input type="text" id="varName" class="radix-input w-full" placeholder="e.g., user_query">
+                </div>
+                <div>
+                    <label for="varType" class="block text-sm font-medium text-gray-700 mb-1">Variable Type:</label>
+                    <select id="varType" class="radix-select w-full">
+                        <option value="string">string</option>
+                        <option value="integer">integer</option>
+                        <option value="number">number</option>
+                        <option value="boolean">boolean</option>
+                        <option value="list">list</option>
+                        <option value="object">object</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancelAddVar" class="radix-button bg-gray-300 hover:bg-gray-400 text-gray-800">Cancel</button>
+                    <button id="confirmAddVar" class="radix-button">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Core formatting logic adapted from the Node.js script
+        function extractVariables(text) {
+            const regex = /\{\{([^}]+)\}\}/g;
+            const variables = {};
+            let match;
+            
+            while ((match = regex.exec(text)) !== null) {
+                const varName = match[1].trim();
+                if (varName) { // Ensure varName is not empty
+                    variables[varName] = 'string'; // Default type to string
+                }
+            }
+            
+            return variables;
+        }
+
+        function formatPrompt(plainText, options) {
+            const { name, author, mode, version = 1, initialRole = 'user', inputs = {} } = options;
+            
+            if (!name || !author || !mode) {
+                throw new Error("Missing required options: name, author, and mode must be provided.");
+            }
+            
+            if (mode !== 'text' && mode !== 'chat') {
+                throw new Error("Mode must be 'text' or 'chat'.");
+            }
+            
+            // Start with user-provided inputs, then add auto-detected ones
+            const detectedInputs = { ...inputs };
+            const autoDetectedFromText = extractVariables(plainText);
+            
+            for (const key in autoDetectedFromText) {
+                if (!detectedInputs.hasOwnProperty(key)) {
+                    detectedInputs[key] = autoDetectedFromText[key];
+                }
+            }
+            
+            // Generate YAML front-matter
+            let yamlString = '---\n';
+            yamlString += `name: ${name}\n`;
+            yamlString += `version: ${version}\n`;
+            yamlString += `author: ${author}\n`;
+            
+            // Add input variables to YAML
+            if (Object.keys(detectedInputs).length === 0) {
+                yamlString += 'input: {}\n';
+            } else {
+                yamlString += 'input:\n';
+                for (const [key, value] of Object.entries(detectedInputs)) {
+                    yamlString += `  ${key}: ${value}\n`;
+                }
+            }
+            
+            yamlString += `mode: ${mode}\n`;
+            yamlString += '---\n';
+            
+            let body = '';
+            
+            if (mode === 'chat') {
+                const chatHistoryLoop = `
+{% for turn in chat_history %}
+{{ turn.role }}:
+{{ turn.content }}
+{% endfor %}`;
+                
+                const currentUserQueryVar = 'current_user_query';
+                const rolePrefixRegex = /^\s*(system|user|assistant|tool):\s*/i;
+                
+                // Check if chat_history is already used in the template
+                const plainTextHandlesHistory = /\{\{[\s\S]*chat_history[\s\S]*\}\}|\{%[\s\S]*chat_history[\s\S]*%\}/i.test(plainText);
+                
+                if (!plainTextHandlesHistory) {
+                    // Auto-add history loop and current query placeholder
+                    const bodyParts = [];
+                    const currentMessageRole = initialRole.toLowerCase();
+                    const validRoles = ['system', 'user', 'assistant', 'tool'];
+                    
+                    if (!validRoles.includes(currentMessageRole)) {
+                        throw new Error(`Invalid initialRole '${initialRole}'. Must be one of ${validRoles.join(', ')}.`);
+                    }
+                    
+                    // Part 1: The initial message
+                    bodyParts.push(`${currentMessageRole}:\n${plainText.trimStart()}`);
+                    
+                    // Part 2: The chat history loop
+                    bodyParts.push(chatHistoryLoop.trim());
+                    if (!detectedInputs.hasOwnProperty('chat_history')) {
+                        detectedInputs['chat_history'] = 'list';
+                    }
+                    
+                    // Part 3: Placeholder for current user query
+                    bodyParts.push(`user:\n{{${currentUserQueryVar}}}`);
+                    if (!detectedInputs.hasOwnProperty(currentUserQueryVar)) {
+                        detectedInputs[currentUserQueryVar] = 'string';
+                    }
+                    
+                    body = bodyParts.join('\n\n');
+                } else {
+                    // plainText handles history itself
+                    if (rolePrefixRegex.test(plainText.trimStart())) {
+                        body = plainText; // User provided full structure with role
+                    } else {
+                        // plainText handles history but doesn't start with role
+                        const roleToUse = initialRole.toLowerCase();
+                        const validRoles = ['system', 'user', 'assistant', 'tool'];
+                        
+                        if (!validRoles.includes(roleToUse)) {
+                            throw new Error(`Invalid initialRole '${initialRole}'. Must be one of ${validRoles.join(', ')}.`);
+                        }
+                        
+                        body = `${roleToUse}:\n${plainText.trimStart()}`;
+                    }
+                }
+            } else { // mode === 'text'
+                body = plainText;
+            }
+            
+            // Re-generate YAML with updated inputs
+            let inputYaml = '';
+            if (Object.keys(detectedInputs).length === 0) {
+                inputYaml = 'input: {}\n';
+            } else {
+                inputYaml = 'input:\n';
+                for (const [key, value] of Object.entries(detectedInputs)) {
+                    inputYaml += `  ${key}: ${value}\n`;
+                }
+            }
+            
+            yamlString = '---\n';
+            yamlString += `name: ${name}\n`;
+            yamlString += `version: ${version}\n`;
+            yamlString += `author: ${author}\n`;
+            yamlString += inputYaml;
+            yamlString += `mode: ${mode}\n`;
+            yamlString += '---\n';
+            
+            return yamlString + body;
+        }
+
+        // UI Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const plainTextEl = document.getElementById('plainText');
+            const promptNameEl = document.getElementById('promptName');
+            const promptAuthorEl = document.getElementById('promptAuthor');
+            const promptModeEl = document.getElementById('promptMode');
+            const promptVersionEl = document.getElementById('promptVersion');
+            const initialRoleEl = document.getElementById('initialRole');
+            const initialRoleContainerEl = document.getElementById('initialRoleContainer');
+            const variablesContainerEl = document.getElementById('variablesContainer');
+            const addVariableBtn = document.getElementById('addVariableBtn');
+            const formatBtn = document.getElementById('formatBtn');
+            const formattedOutputEl = document.getElementById('formattedOutput');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            // Modal elements
+            const addVariableModal = document.getElementById('addVariableModal');
+            const varNameEl = document.getElementById('varName');
+            const varTypeEl = document.getElementById('varType');
+            const cancelAddVarBtn = document.getElementById('cancelAddVar');
+            const confirmAddVarBtn = document.getElementById('confirmAddVar');
+            
+            // Variables management
+            let userDefinedVariables = {};
+            
+            // Show/hide initialRole based on mode
+            promptModeEl.addEventListener('change', function() {
+                if (this.value === 'chat') {
+                    initialRoleContainerEl.classList.remove('hidden');
+                } else {
+                    initialRoleContainerEl.classList.add('hidden');
+                }
+            });
+            
+            // Format button click
+            formatBtn.addEventListener('click', function() {
+                try {
+                    const plainText = plainTextEl.value;
+                    const name = promptNameEl.value;
+                    const author = promptAuthorEl.value;
+                    const mode = promptModeEl.value;
+                    const version = parseInt(promptVersionEl.value, 10);
+                    const initialRole = initialRoleEl.value;
+                    
+                    // Validate required fields
+                    if (!name || !author) {
+                        alert('Name and Author are required fields.');
+                        return;
+                    }
+                    
+                    const options = {
+                        name,
+                        author,
+                        mode,
+                        version,
+                        inputs: { ...userDefinedVariables }
+                    };
+                    
+                    if (mode === 'chat') {
+                        options.initialRole = initialRole;
+                    }
+                    
+                    const formattedPrompt = formatPrompt(plainText, options);
+                    formattedOutputEl.textContent = formattedPrompt;
+                    
+                    // Enable action buttons
+                    copyBtn.disabled = false;
+                    downloadBtn.disabled = false;
+                    
+                    // Highlight syntax
+                    Prism.highlightElement(formattedOutputEl);
+                    
+                    // Update variables display based on final detected variables
+                    updateVariablesDisplay();
+                } catch (error) {
+                    alert(`Error: ${error.message}`);
+                    console.error(error);
+                }
+            });
+            
+            // Add variable button
+            addVariableBtn.addEventListener('click', function() {
+                // Show modal
+                addVariableModal.classList.remove('hidden');
+                varNameEl.value = '';
+                varNameEl.focus();
+            });
+            
+            // Cancel add variable
+            cancelAddVarBtn.addEventListener('click', function() {
+                addVariableModal.classList.add('hidden');
+            });
+            
+            // Confirm add variable
+            confirmAddVarBtn.addEventListener('click', function() {
+                const varName = varNameEl.value.trim();
+                const varType = varTypeEl.value;
+                
+                if (!varName) {
+                    alert('Variable name is required.');
+                    return;
+                }
+                
+                userDefinedVariables[varName] = varType;
+                addVariableModal.classList.add('hidden');
+                
+                updateVariablesDisplay();
+            });
+            
+            // Copy to clipboard button
+            copyBtn.addEventListener('click', function() {
+                const formatted = formattedOutputEl.textContent;
+                navigator.clipboard.writeText(formatted)
+                    .then(() => {
+                        const originalText = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtn.textContent = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        alert('Failed to copy to clipboard');
+                    });
+            });
+            
+            // Download button
+            downloadBtn.addEventListener('click', function() {
+                const formatted = formattedOutputEl.textContent;
+                const name = promptNameEl.value || 'formatted_prompt';
+                const blob = new Blob([formatted], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${name}.md`;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 0);
+            });
+            
+            // Variable auto-detection from text input
+            plainTextEl.addEventListener('input', function() {
+                // Only auto-detect if we're not in the middle of editing
+                setTimeout(updateVariablesDisplay, 500);
+            });
+            
+            // Helper function to update variables display
+            function updateVariablesDisplay() {
+                const plainText = plainTextEl.value;
+                const autoDetectedVars = extractVariables(plainText);
+                
+                // Combine auto-detected with user-defined
+                const allVars = { ...autoDetectedVars, ...userDefinedVariables };
+                
+                // Clear container
+                variablesContainerEl.innerHTML = '';
+                
+                if (Object.keys(allVars).length === 0) {
+                    variablesContainerEl.innerHTML = '<div class="text-sm text-gray-500 italic">Variables will be detected from your prompt content.</div>';
+                    return;
+                }
+                
+                // Create element for each variable
+                for (const [name, type] of Object.entries(allVars)) {
+                    const varDiv = document.createElement('div');
+                    varDiv.className = 'flex items-center justify-between';
+                    
+                    const isUserDefined = userDefinedVariables.hasOwnProperty(name);
+                    const badgeColor = isUserDefined ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800';
+                    
+                    varDiv.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="font-mono text-sm">${name}</span>
+                            <span class="ml-2 ${badgeColor} text-xs px-2 py-1 rounded">${type}</span>
+                            ${isUserDefined ? '<span class="ml-2 text-xs text-blue-600">user-defined</span>' : '<span class="ml-2 text-xs text-gray-500">auto-detected</span>'}
+                        </div>
+                        ${isUserDefined ? `<button class="text-red-500 hover:text-red-700 text-sm" data-var="${name}">Remove</button>` : ''}
+                    `;
+                    
+                    variablesContainerEl.appendChild(varDiv);
+                    
+                    // Add event listener to remove button if present
+                    const removeBtn = varDiv.querySelector('button[data-var]');
+                    if (removeBtn) {
+                        removeBtn.addEventListener('click', function() {
+                            const varToRemove = this.getAttribute('data-var');
+                            delete userDefinedVariables[varToRemove];
+                            updateVariablesDisplay();
+                        });
+                    }
+                }
+            }
+            
+            // Initialize display
+            if (promptModeEl.value === 'chat') {
+                initialRoleContainerEl.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

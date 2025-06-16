@@ -1,0 +1,19 @@
+# 数据格式定义
+# 此文件定义了专家评分对话数据的格式结构
+
+# 示例格式（将由实际内容替换）
+version: '1.0'
+conversation:
+  metadata:
+    id: 'sample-id'
+    date: '2025-05-23'
+  messages:
+    - role: 'parent'
+      content: '示例家长消息'
+    - role: 'coach'
+      content: '示例教练回复'
+  expert_scores:
+    empathy: 0.0       # 共情分数
+    positive_regard: 0.0  # 积极关注分数
+    goal_consensus: 0.0   # 目标一致分数
+    alliance: 0.0      # 咨访同盟分数

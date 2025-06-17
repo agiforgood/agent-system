@@ -1,0 +1,11 @@
+[project]
+name = "agent-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "marvin>=3.1.1",
+    "openai>=1.0.0",
+    "google-generativeai>=0.8.5",
+]

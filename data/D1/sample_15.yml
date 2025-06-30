@@ -1,0 +1,15 @@
+version: '1.0'
+conversation:
+  metadata:
+    id: '15'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '是啊，最近半年越来越多了，以前他还不敢这样，现在真是翅膀硬了！'
+    - role: 'coach'
+      content: '听起来这半年的变化让你感觉很明显，除了冲突变多，你还留意到这期间孩子或者家里有其他什么变化吗？'
+  round_10_messages:
+    - role: 'parent'
+      content: '还能怎么谈？我当时就火了，问他怎么回事，他不服气还找借口，我就把他手机给禁了！'
+    - role: 'coach'
+      content: '听起来你当时非常生气，在他找借口的时候，你心里冒出来的第一个想法是什么呢？'

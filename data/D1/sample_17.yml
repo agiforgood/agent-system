@@ -1,0 +1,15 @@
+version: '1.0'
+conversation:
+  metadata:
+    id: '17'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '我当时就火了，觉得他一点不为自己的成绩着急，还在那儿强词夺理！'
+    - role: 'coach'
+      content: '听起来你感觉他当时的态度让你非常生气，好像觉得他不重视学习，是这样吗？'
+  round_10_messages:
+    - role: 'parent'
+      content: '对，就像这次，最后他妈出来打圆场，说是饭后再谈，但谈的时候气氛还是很僵。'
+    - role: 'coach'
+      content: '妈妈经常在你们冲突时介入调解吗，那次饭后你们具体是怎么谈的？'

@@ -1,0 +1,15 @@
+version: '1.0'
+conversation:
+  metadata:
+    id: '16'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '可我就是担心他走偏，现在社会诱惑这么多，不管严点行吗？'
+    - role: 'coach'
+      content: '这份未雨绸缪的警觉是你的优势，我们可以一起探索如何在"完全放任"和"严格管束"之间找到第三条路？'
+  round_10_messages:
+    - role: 'parent'
+      content: '他打篮球倒是有模有样，可这和学习有什么关系？'
+    - role: 'coach'
+      content: '篮球中的战术执行需要哪些能力？这些能力如果复制到学习场景会怎样？'

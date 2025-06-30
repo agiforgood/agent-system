@@ -1,0 +1,15 @@
+version: '1.0'
+conversation:
+  metadata:
+    id: '18'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '当然怕他以后遇到困难就推卸责任！我这么辛苦工作不就是为了他好吗？'
+    - role: 'coach'
+      content: '你希望传递的关心，孩子现在接收到的可能是压力，我们可以试试调整表达方式。'
+  round_10_messages:
+    - role: 'parent'
+      content: '都是他妈在善后，我气得根本不想说话，现在成成躲着我看手机。'
+    - role: 'coach'
+      content: '这种时候，如果尝试说"我现在很生气，但更担心我们的关系"，你觉得孩子会如何反应？'

@@ -1,0 +1,15 @@
+version: '1.0'
+conversation:
+  metadata:
+    id: '19'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '好像没什么用，她当时跑回房间摔门，后来好几天不理人，现在还是偷偷玩。'
+    - role: 'coach'
+      content: '听起来这种方式似乎没达到你期望的效果，反而让沟通更困难了，如果我们今天的谈话能聚焦在探索一些新的方法，试着去理解美丽的反应并找到更有效的沟通方式，你觉得怎么样？'
+  round_10_messages:
+    - role: 'parent'
+      content: '我们那时候条件差多了，不也一样学？她现在有吃有穿，坐教室里，有什么难的？'
+    - role: 'coach'
+      content: '你那时候条件艰苦确实非常不容易，是否有可能现在的学习内容或压力跟你们那个时候确实不太一样了呢？'

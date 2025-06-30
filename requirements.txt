@@ -1,0 +1,7 @@
+pytest
+openai
+rx
+tqdm
+scipy
+pyyaml
+python-dotenv

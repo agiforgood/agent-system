@@ -1,0 +1,19 @@
+# 数据格式定义
+# 此文件定义了专家评分对话数据的格式结构
+
+# 示例格式（将由实际内容替换）
+version: '1.0'
+conversation:
+  metadata:
+    id: 'sample-id'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '示例家长消息'
+    - role: 'coach'
+      content: '示例教练回复'
+  round_10_messages:
+    - role: 'parent'
+      content: '示例家长消息'
+    - role: 'coach'
+      content: '示例教练回复'

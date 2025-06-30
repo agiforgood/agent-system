@@ -1,0 +1,15 @@
+version: '1.0'
+conversation:
+  metadata:
+    id: '14'
+    date: '2025-05-23'
+  round_5_messages:
+    - role: 'parent'
+      content: '大概去年开始，她总说"你别管了"，作业也不让我检查了。'
+    - role: 'coach'
+      content: '这说明婷婷正在经历重要的成长阶段，她开始渴望证明自己的管理能力。您觉得在这个过程中，她最需要获得什么样的支持？'
+  round_10_messages:
+    - role: 'parent'
+      content: '所以我才更要严格管教，现在诱惑这么多！'
+    - role: 'coach'
+      content: '严格管教确实能快速见效，您是否注意到这种管理方式对婷婷的主动学习意愿产生了什么影响？'
